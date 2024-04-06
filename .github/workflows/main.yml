@@ -3,7 +3,7 @@ name: main
 on:
   push:
     branches: [main]
-    tags:
+    tags: 
   pull_request:
 
 jobs:
@@ -52,3 +52,19 @@ jobs:
         python-version: ${{ matrix.python }}
     - run: python -mpip install --upgrade setuptools pip tox virtualenv
     - run: tox -e ${{ matrix.toxenv }}
+  test:
+    runs-on: ubuntu-latest
+
+    needs: [main]  
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9.10'
+
+    - name: Run tests
+      run: python -m unittest discover -s deadlock-test-suite/tt -p '*tte.py'
