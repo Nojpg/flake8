@@ -69,8 +69,5 @@ jobs:
         python-version: '3.9'
     - run: |
         pip install -e .
-        ls -la ./deadlock-test-suite/tt
-        ls -la ./deadlock-test-suite/testcases/CWE833_Deadlock
-        pwd
     - name: Run tests
       run: python -m unittest discover -s deadlock-test-suite/tt -p '*tte.py'
