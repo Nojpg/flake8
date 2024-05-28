@@ -60,10 +60,10 @@ class FileProcessor:
     noqa = False
 
     def __init__(
-        self,
-        filename: str,
-        options: argparse.Namespace,
-        lines: list[str] | None = None,
+            self,
+            filename: str,
+            options: argparse.Namespace,
+            lines: list[str] | None = None,
     ) -> None:
         """Initialize our file processor.
 
@@ -128,7 +128,7 @@ class FileProcessor:
         self._fstring_start = lineno
 
     def multiline_string(
-        self, token: tokenize.TokenInfo
+            self, token: tokenize.TokenInfo
     ) -> Generator[str, None, None]:
         """Iterate through the lines of a multiline string."""
         if token.type == FSTRING_END:  # pragma: >=3.12 cover
@@ -211,7 +211,7 @@ class FileProcessor:
                     column_index = previous_column - 1
                     previous_text = self.lines[row_index][column_index]
                     if previous_text == "," or (
-                        previous_text not in "{[(" and text not in "}])"
+                            previous_text not in "{[(" and text not in "}])"
                     ):
                         text = f" {text}"
                 elif previous_column != start_column:
@@ -235,9 +235,9 @@ class FileProcessor:
         return joined_comments, self.logical_line, mapping_list
 
     def keyword_arguments_for(
-        self,
-        parameters: dict[str, bool],
-        arguments: dict[str, Any],
+            self,
+            parameters: dict[str, bool],
+            arguments: dict[str, Any],
     ) -> dict[str, Any]:
         """Generate the keyword arguments for a list of parameters."""
         ret = {}
@@ -267,7 +267,7 @@ class FileProcessor:
 
     def _noqa_line_range(self, min_line: int, max_line: int) -> dict[int, str]:
         line_range = range(min_line, max_line + 1)
-        joined = "".join(self.lines[min_line - 1 : max_line])
+        joined = "".join(self.lines[min_line - 1: max_line])
         return dict.fromkeys(line_range, joined)
 
     @functools.cached_property
@@ -348,7 +348,7 @@ class FileProcessor:
             otherwise False
         """
         if not self.options.disable_noqa and any(
-            defaults.NOQA_FILE.match(line) for line in self.lines
+                defaults.NOQA_FILE.match(line) for line in self.lines
         ):
             return True
         elif any(defaults.NOQA_FILE.search(line) for line in self.lines):
@@ -375,13 +375,13 @@ class FileProcessor:
 
 def is_eol_token(token: tokenize.TokenInfo) -> bool:
     """Check if the token is an end-of-line token."""
-    return token[0] in NEWLINE or token[4][token[3][1] :].lstrip() == "\\\n"
+    return token[0] in NEWLINE or token[4][token[3][1]:].lstrip() == "\\\n"
 
 
 def is_multiline_string(token: tokenize.TokenInfo) -> bool:
     """Check if this is a multiline string."""
     return token.type == FSTRING_END or (
-        token.type == tokenize.STRING and "\n" in token.string
+            token.type == tokenize.STRING and "\n" in token.string
     )
 
 

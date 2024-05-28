@@ -2,31 +2,118 @@ import unittest
 import subprocess
 import os
 
-def run_example(file_path):
-    try:
-        process = subprocess.Popen(["python", file_path], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdout, stderr = process.communicate(timeout=1)
-        if stderr:
-            return True
-        return False
-    except subprocess.TimeoutExpired:
-        return True
 
-class TestDeadlocks(unittest.TestCase):
-    def test_deadlocks(self):
-        test_folders = ["deadlock-test-suite/testcases/CWE667_Improper_Locking", "deadlock-test-suite/testcases/CWE833_Deadlock"]
-        deadlocks_count = 0
+class TestFlake8(unittest.TestCase):
+    def test_flake8_dl_acquiring_in_wrong_order(self):
+        current_dir = os.getcwd()
+        filepath = "/home/runner/work/flake8/flake8/deadlock-test-suite/testcases/CWE833_Deadlock/dl_acquiring_in_wrong_order.py"
+        command = ["flake8", "--select=DLC001", filepath]
 
-        for folder in test_folders:
-            for root, dirs, files in os.walk(folder):
-                for file in files:
-                    file_path = os.path.join(root, file)
-                    print(f'{file_path}')
-                    if run_example(file_path):
-                        print(f"Deadlock occurred in {file_path} \n")
-                        deadlocks_count += 1
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        output, error = process.communicate()
+        output = output.decode('utf-8')
 
-        self.assertEqual(deadlocks_count, 0, f"{deadlocks_count} deadlocks occurred")
+        self.assertIn("DLC001 potential deadlock detected", output)
+
+    def test_flake8_dl_in_class(self):
+        current_dir = os.getcwd()
+        filepath = "/home/runner/work/flake8/flake8/deadlock-test-suite/testcases/CWE833_Deadlock/dl_in_class.py"
+        command = ["flake8", "--select=DLC001", filepath]
+
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        output, error = process.communicate()
+        output = output.decode('utf-8')
+
+        self.assertIn("DLC001 potential deadlock detected", output)
+
+    def test_flake8_dl_in_decorator(self):
+        current_dir = os.getcwd()
+        filepath = "/home/runner/work/flake8/flake8/deadlock-test-suite/testcases/CWE833_Deadlock/dl_in_decorator.py"
+        command = ["flake8", "--select=DLC001", filepath]
+
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        output, error = process.communicate()
+        output = output.decode('utf-8')
+
+        self.assertIn("DLC001 potential deadlock detected", output)
+
+    def test_flake8_dl_on_condition(self):
+        current_dir = os.getcwd()
+        filepath = "/home/runner/work/flake8/flake8/deadlock-test-suite/testcases/CWE833_Deadlock/dl_on_condition.py"
+        command = ["flake8", "--select=DLC001", filepath]
+
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        output, error = process.communicate()
+        output = output.decode('utf-8')
+
+        self.assertIn("DLC001 potential deadlock detected", output)
+
+    def test_flake8_dl_on_event(self):
+        current_dir = os.getcwd()
+        filepath = "/home/runner/work/flake8/flake8/deadlock-test-suite/testcases/CWE833_Deadlock/dl_on_event.py"
+        command = ["flake8", "--select=DLC001", filepath]
+
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        output, error = process.communicate()
+        output = output.decode('utf-8')
+
+        self.assertIn("DLC001 potential deadlock detected", output)
+
+    def test_flake8_dl_on_event_and_condition(self):
+        current_dir = os.getcwd()
+        filepath = "/home/runner/work/flake8/flake8/deadlock-test-suite/testcases/CWE833_Deadlock/dl_on_event_and_condition.py"
+        command = ["flake8", "--select=DLC001", filepath]
+
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        output, error = process.communicate()
+        output = output.decode('utf-8')
+
+        self.assertIn("DLC001 potential deadlock detected", output)
+
+    def test_flake8_dl_recursive(self):
+        current_dir = os.getcwd()
+        filepath = "/home/runner/work/flake8/flake8/deadlock-test-suite/testcases/CWE833_Deadlock/dl_recursive.py"
+        command = ["flake8", "--select=DLC001", filepath]
+
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        output, error = process.communicate()
+        output = output.decode('utf-8')
+
+        self.assertIn("DLC001 potential deadlock detected", output)
+
+    def test_flake8_dl_wait_on_each(self):
+        current_dir = os.getcwd()
+        filepath = "/home/runner/work/flake8/flake8/deadlock-test-suite/testcases/CWE833_Deadlock/dl_wait_on_each.py"
+        command = ["flake8", "--select=DLC001", filepath]
+
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        output, error = process.communicate()
+        output = output.decode('utf-8')
+
+        self.assertIn("DLC001 potential deadlock detected", output)
+
+    def test_flake8_dl_waits_on_itself(self):
+        current_dir = os.getcwd()
+        filepath = "/home/runner/work/flake8/flake8/deadlock-test-suite/testcases/CWE833_Deadlock/dl_waits_on_itself.py"
+        command = ["flake8", "--select=DLC001", filepath]
+
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        output, error = process.communicate()
+        output = output.decode('utf-8')
+
+        self.assertIn("DLC001 potential deadlock detected", output)
+
+    def test_flake8_dl_release_lock_fail(self):
+        current_dir = os.getcwd()
+        filepath = "/home/runner/work/flake8/flake8/deadlock-test-suite/testcases/CWE667_Improper_Locking/dl_release_lock_fail.py"
+        command = ["flake8", "--select=DLC001", filepath]
+
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        output, error = process.communicate()
+        output = output.decode('utf-8')
+
+        self.assertIn("DLC001 potential deadlock detected", output)
+
 
 if __name__ == '__main__':
     unittest.main()
