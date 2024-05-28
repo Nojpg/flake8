@@ -14,7 +14,7 @@
  Flake8
 ========
 
-Flake8 is a wrapper around these tools:
+Flake8 is a wrapper around these toоls:
 
 - PyFlakes
 - pycodestyle
