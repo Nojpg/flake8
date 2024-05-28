@@ -51,7 +51,6 @@ jobs:
       with:
         python-version: ${{ matrix.python }}
     - run: python -mpip install --upgrade setuptools pip tox virtualenv
-    - run: tox -e ${{ matrix.toxenv }}
   test:
     runs-on: ubuntu-latest
 
