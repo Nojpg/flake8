@@ -69,7 +69,7 @@ jobs:
         python-version: '3.9'
     - run: |
         pip install -e .
-        ls -la
+        ls -la ./deadlock-test-suite
 
     - name: Run tests
       run: python -m unittest discover -s deadlock-test-suite/tt -p '*tte.py'
