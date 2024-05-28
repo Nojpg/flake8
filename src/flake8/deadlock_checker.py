@@ -1,6 +1,6 @@
 import ast
-import astpretty
 import os
+
 
 class DeadlockChecker:
     def __init__(self, tree, filename):
@@ -22,7 +22,8 @@ class DeadlockChecker:
     def identify_threads(self):
         threads = {}
         for node in ast.walk(self.tree):
-            if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute) and node.func.attr in {'Thread', 'Process'}:
+            if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute) and node.func.attr in {'Thread',
+                                                                                                          'Process'}:
                 for kw in node.keywords:
                     if kw.arg == 'target' and isinstance(kw.value, ast.Name):
                         thread_func = kw.value.id
@@ -44,7 +45,8 @@ class DeadlockChecker:
                                     lock_name = self.get_lock_name(item.context_expr)
                                     if lock_name:
                                         if lock_name in [l[0] for l in current_locks]:
-                                            self.add_to_graph(self.lock_graph, (lock_name, n.lineno, n.col_offset), (lock_name, n.lineno, n.col_offset))
+                                            self.add_to_graph(self.lock_graph, (lock_name, n.lineno, n.col_offset),
+                                                              (lock_name, n.lineno, n.col_offset))
                                         else:
                                             current_locks.append((lock_name, n.lineno, n.col_offset))
                                             self.add_to_graph(self.lock_graph, current_locks[-1], current_locks[-1])
@@ -125,6 +127,7 @@ class DeadlockChecker:
                 return deadlocks
         return []
 
+
 def check_file(filename):
     with open(filename, 'r') as file:
         tree = ast.parse(file.read(), filename=filename)
@@ -133,12 +136,10 @@ def check_file(filename):
     for error in checker.run():
         print(f"{filename}:{error[0]}:{error[1]}: {error[2]}")
 
+
 def check_directory(directory):
     for root, _, files in os.walk(directory):
         for file in files:
             if file.endswith('.py'):
                 filepath = os.path.join(root, file)
                 check_file(filepath)
-
-# Пример запуска проверки для всех файлов в директории CWE833_Deadlock
-# check_directory(r'C:\Users\killa\PycharmProjects\flake8\deadlock-test-suite\testcases\CWE833_Deadlock')
