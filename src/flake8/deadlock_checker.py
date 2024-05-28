@@ -38,7 +38,6 @@ class DeadlockChecker:
                         func_name = func_node.name
                         current_locks = []
                         current_events = []
-                        current_joins = []
                         for n in ast.walk(func_node):
                             if isinstance(n, ast.With):
                                 for item in n.items:
